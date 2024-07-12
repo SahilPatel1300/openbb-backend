@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import subprocess
 import json
-import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -11,6 +10,7 @@ CORS(app)  # Enable CORS for all routes
 def run_script():
     data = request.get_json()
     stock_symbol = data.get('stockSymbol')
+    app.logger.info(f"Received request for stock symbol: {stock_symbol}")
 
     try:
         # Run the Python script with the stock symbol as an argument
@@ -19,10 +19,10 @@ def run_script():
         if result.returncode != 0:
             raise Exception(f"Python script error: {result.stderr}")
 
-        # Read the output JSON file
-        with open('output.json', 'r') as f:
-            output_data = json.load(f)
+        # Parse the JSON output from the script
+        output_data = json.loads(result.stdout)
 
+        app.logger.info(f"Script output: {output_data}")
         return jsonify(output_data)
 
     except Exception as e:
@@ -31,8 +31,9 @@ def run_script():
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
+    app.run(debug=True)
 
-# # Add a route for Azure health checks
-# @app.route('/healthz')
-# def health_check():
-#     return "OK", 200
+# Add a route for health checks
+@app.route('/healthz')
+def health_check():
+    return "OK", 200

@@ -121,7 +121,8 @@ if __name__ == "__main__":
             sys.exit(1)
 
         last_10_days_data = get_last_10_days_data(stock_data, indicators)
-        save_json_data(last_10_days_data, 'output.json')
+        print(json.dumps(last_10_days_data))
+        #save_json_data(last_10_days_data, 'output.json')
         #save_pretty_json(last_10_days_data, 'output_pretty.json')
         # Filter and save the specific indicators
         # indicators_to_include = ['ADOSC', 'STOCH', 'RSI', 'MACD']  
