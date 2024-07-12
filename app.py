@@ -4,7 +4,7 @@ import subprocess
 import json
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={'/*': {'origins': '*'}})  # Enable CORS for all routes
 
 @app.route('/run-script', methods=['POST'])
 def run_script():
