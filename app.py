@@ -31,7 +31,6 @@ def run_script():
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
-    app.run(debug=True)
 
 # Add a route for health checks
 @app.route('/healthz')
